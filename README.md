@@ -45,54 +45,49 @@
 Name : Suchitra Nath
 Reg no: 212223220112
 ```
-class VacuumCleanerAgent:
-    def __init__(self):
-        self.location = "A"  # Initial location (can be "A" or "B")
-        self.dirt_status = {"A": False, "B": False}  # Initial dirt status (False means no dirt)
+import random
+ROOMS = ["Room 1", "Room 2"]
+FEVER_THRESHOLD = 98.5
+environment = {
+    "Room 1": round(random.uniform(97.0, 101.0), 1),
+    "Room 2": round(random.uniform(97.0, 101.0), 1)
+}
+agent_location = "Room 1"
+performance_score = 0
 
-    def move_left(self):
-        if self.location == "B":
-            self.location = "A"
+def check_temperature(room):
+    temp = environment[room]
+    print(f"Checking {room}... Patient temperature: {temp}°F")
+    return temp
 
-    def move_right(self):
-        if self.location == "A":
-            self.location = "B"
+def treat_patient(room):
+    global performance_score
+    print(f"Treating patient in {room}... ")
+    performance_score += 1  # successful treatment
 
-    def suck_dirt(self):
-        if self.dirt_status[self.location]:
-            self.dirt_status[self.location] = False
-            print(f"Sucked dirt in location {self.location}")
+def move_to(room):
+    global agent_location, performance_score
+    if agent_location != room:
+        print(f"Moving from {agent_location} to {room}... ")
+        agent_location = room
+        performance_score -= 1  # movement cost
+print("Medicine Prescribing Agent Simulation Started \n")
 
-    def do_nothing(self):
-        pass
+for room in ROOMS:
+    move_to(room)
+    temp = check_temperature(room)
+    if temp > FEVER_THRESHOLD:
+        treat_patient(room)
+    else:
+        print(f"No treatment needed in {room}.\n")
+print("\nSimulation Complete!")
+print(f"Final Performance Score: {performance_score}")
+print("Environment State:", environment)
 
-    def perform_action(self, action):
-        if action == "left":
-            self.move_left()
-        elif action == "right":
-            self.move_right()
-        elif action == "suck":
-            self.suck_dirt()
-        elif action == "nothing":
-            self.do_nothing()
-        else:
-            print("Invalid action")
-
-    def print_status(self):
-        print(f"Location: {self.location}, Dirt Status: {self.dirt_status}")
-
-agent = VacuumCleanerAgent()
-
-
-agent.perform_action("left")
-agent.print_status()
-agent.perform_action("suck")
-agent.print_status()
-agent.perform_action("nothing")
-agent.print_status()
 ```
 ## OUTPUT:
-<img width="565" height="108" alt="image" src="https://github.com/user-attachments/assets/f7df527d-c7a9-4a6e-afa1-c3aa6d54eecd" />
+<img width="802" height="413" alt="image" src="https://github.com/user-attachments/assets/92c96354-0acc-495c-9a3d-284c3d21f43b" />
+
 
 
 ## RESULT:
